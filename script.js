@@ -1,61 +1,29 @@
-// ================= MOBILE MENU =================
+const menuToggle=document.getElementById("menuToggle");
+const navMenu=document.querySelector(".nav-menu");
 
-const menuToggle = document.getElementById("menuToggle");
-const navMenu = document.querySelector(".nav-menu");
-
-menuToggle.addEventListener("click", () => {
+menuToggle.addEventListener("click",()=>{
   navMenu.classList.toggle("active");
-
-  if (navMenu.classList.contains("active")) {
-    menuToggle.textContent = "✕";
-  } else {
-    menuToggle.textContent = "☰";
-  }
+  menuToggle.textContent=navMenu.classList.contains("active")?"✕":"☰";
 });
 
-
-// ================= CLOSE MENU AFTER CLICK =================
-
-const navLinks = document.querySelectorAll(".nav-menu a");
-
-navLinks.forEach(link => {
-  link.addEventListener("click", () => {
+document.querySelectorAll(".nav-menu a").forEach(link=>{
+  link.addEventListener("click",()=>{
     navMenu.classList.remove("active");
-    menuToggle.textContent = "☰";
+    menuToggle.textContent="☰";
   });
 });
 
+const animatedElements=document.querySelectorAll(".benefit-card,.about-grid,.contact-box");
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting) entry.target.classList.add("show");
+  });
+},{threshold:.15});
 
-// ================= SCROLL ANIMATION =================
-
-const animatedElements = document.querySelectorAll(
-  ".benefit-card, .about-grid, .contact-box"
-);
-
-const observer = new IntersectionObserver(
-  entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("show");
-      }
-    });
-  },
-  {
-    threshold: 0.15
-  }
-);
-
-animatedElements.forEach(element => {
+animatedElements.forEach(element=>{
   element.classList.add("hidden");
   observer.observe(element);
 });
 
-
-// ================= DYNAMIC YEAR =================
-
-const footerText = document.querySelector("footer p");
-
-const currentYear = new Date().getFullYear();
-
-footerText.textContent =
-  `© ${currentYear} NazwaHydroponik. Growing a greener future.`;
+const footerText=document.querySelector("footer p");
+footerText.textContent=`© ${new Date().getFullYear()} NazwaHydroponik. Growing a greener future.`;
