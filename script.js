@@ -1,29 +1,3 @@
-const menuToggle=document.getElementById("menuToggle");
-const navMenu=document.querySelector(".nav-menu");
-
-menuToggle.addEventListener("click",()=>{
-  navMenu.classList.toggle("active");
-  menuToggle.textContent=navMenu.classList.contains("active")?"✕":"☰";
-});
-
-document.querySelectorAll(".nav-menu a").forEach(link=>{
-  link.addEventListener("click",()=>{
-    navMenu.classList.remove("active");
-    menuToggle.textContent="☰";
-  });
-});
-
-const animatedElements=document.querySelectorAll(".benefit-card,.about-grid,.contact-box");
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting) entry.target.classList.add("show");
-  });
-},{threshold:.15});
-
-animatedElements.forEach(element=>{
-  element.classList.add("hidden");
-  observer.observe(element);
-});
-
-const footerText=document.querySelector("footer p");
-footerText.textContent=`© ${new Date().getFullYear()} NazwaHydroponik. Growing a greener future.`;
+const plants=[{name:"Lettuce",type:"leafy",image:"lettuce.svg",tag:"BEST SELLER",desc:"Selada hijau yang fresh dan cocok untuk salad."},{name:"Pakcoy",type:"leafy",image:"pakcoy.svg",tag:"FRESH",desc:"Pakcoy crunchy untuk tumisan atau menu harian."},{name:"Spinach",type:"leafy",image:"spinach.svg",tag:"GREEN PICK",desc:"Bayam hijau yang praktis untuk menu sehat."},{name:"Strawberry",type:"fruit",image:"strawberry.svg",tag:"CUTE PICK",desc:"Pilihan buah mini untuk kamu yang suka tanaman unik."}];
+const grid=document.getElementById("plantGrid");function render(list=plants){grid.innerHTML=list.length?list.map(p=>`<article class="plant"><div class="plant-img"><img src="${p.image}" alt="Tanaman hidroponik ${p.name}"><span class="tag">${p.tag}</span></div><div class="plant-body"><small>HYDROPONIC PLANT</small><h3>${p.name}</h3><p>${p.desc}</p><a class="plant-link" target="_blank" href="https://wa.me/6285864610573?text=halo%20kakak%20aku%20mau%20pesen%20tanaman%20${encodeURIComponent(p.name)}%20kamudong.....">Pesan tanaman →</a></div></article>`).join(""):"<p>Tanaman tidak ditemukan.</p>"}
+document.getElementById("filters").onclick=e=>{if(e.target.tagName!=="BUTTON")return;document.querySelectorAll("#filters button").forEach(b=>b.classList.remove("active"));e.target.classList.add("active");const f=e.target.dataset.filter;render(f==="all"?plants:plants.filter(p=>p.type===f))};document.getElementById("menu").onclick=()=>document.getElementById("nav").classList.toggle("open");document.querySelectorAll("nav a").forEach(a=>a.onclick=()=>document.getElementById("nav").classList.remove("open"));document.getElementById("searchOpen").onclick=()=>{document.getElementById("searchbar").style.display="block";document.getElementById("search").focus()};document.getElementById("searchClose").onclick=()=>document.getElementById("searchbar").style.display="none";document.getElementById("search").oninput=e=>{const q=e.target.value.toLowerCase();render(plants.filter(p=>(p.name+" "+p.type+" "+p.tag).toLowerCase().includes(q)))};render();
